@@ -66,7 +66,7 @@ class DatabaseHelper
     // Insert
     public function insert($table, $data = [])
     {
-    	return $db->table($table)->insert($data);
+    	return $this->db->table($table)->insert($data);
     }
 
     // Update
