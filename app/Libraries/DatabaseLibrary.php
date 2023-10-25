@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 use CodeIgniter\Database\BaseConnection;
 
-class DatabaseHelper
+class DatabaseLibrary
 {
     protected $db;
 
@@ -91,5 +91,75 @@ class DatabaseHelper
     public function getVersion()
     {
     	return $this->db->getVersion();
+    }
+
+    // clean string
+	public function cleanStr($str)
+    {
+        $str = strTrim($str);
+        $str = removeSpecialCharacters($str);
+        return esc($str);
+    }
+
+	// clean number
+	public function cleanNumber($num)
+    {
+        $num = strTrim($num);
+        $num = esc($num);
+        if (empty($num)) {
+            return 0;
+        }
+        return intval($num);
+    }
+
+    // Remove Forbidden Characters
+    public function removeForbiddenCharacters($str)
+    {
+        $str = strTrim($str);
+        $str = strReplace(';', '', $str);
+        $str = strReplace('"', '', $str);
+        $str = strReplace('$', '', $str);
+        $str = strReplace('%', '', $str);
+        $str = strReplace('*', '', $str);
+        $str = strReplace('/', '', $str);
+        $str = strReplace('\'', '', $str);
+        $str = strReplace('<', '', $str);
+        $str = strReplace('>', '', $str);
+        $str = strReplace('=', '', $str);
+        $str = strReplace('?', '', $str);
+        $str = strReplace('[', '', $str);
+        $str = strReplace(']', '', $str);
+        $str = strReplace('\\', '', $str);
+        $str = strReplace('^', '', $str);
+        $str = strReplace('`', '', $str);
+        $str = strReplace('{', '', $str);
+        $str = strReplace('}', '', $str);
+        $str = strReplace('|', '', $str);
+        $str = strReplace('~', '', $str);
+        $str = strReplace('+', '', $str);
+
+        return $str;
+    }
+
+    // Remove Special Characters
+    public function removeSpecialCharacters($str, $removeQuotes = false)
+    {
+        $str = removeForbiddenCharacters($str);
+        $str = strReplace('#', '', $str);
+        $str = strReplace('!', '', $str);
+        $str = strReplace('(', '', $str);
+        $str = strReplace(')', '', $str);
+        if ($removeQuotes) {
+            $str = clrQuotes($str);
+        }
+        return $str;
+    }
+
+    //
+    public function clrQuotes($str)
+    {
+        $str = strReplace('"', '', $str);
+        $str = strReplace("'", '', $str);
+        return $str;
     }
 }
